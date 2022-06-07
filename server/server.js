@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 5000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const config = require('./config/key');
@@ -22,13 +22,17 @@ mongoose.connect(config.mongoURI, {})
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
+app.get('/api/hello', (req, res) => {
+  res.send('cors test');
+})
+
 app.post('api/user/register', (req, res) => {
   // 회원가입에 필요한 정보를 client에서 가져오면
   // 그것들을 DB에 넣어줌
 
   const user = new User(req.body);
 
-  user.save((err, userInfo) => {
+  user.save((err, user) => {
     if(err) return res.json({ success: false, err })
     return res.status(200).json({
       success: true
@@ -37,12 +41,12 @@ app.post('api/user/register', (req, res) => {
 });
 
 app.post('api/user/login', (req, res) => {
-  // 요청된 email을 DB에서 찾기
+  // login 요청된 email을 DB에서 찾기
   User.findOne({ email: req.body.email }, (err, user) => {
     if(!user) {
       return res.json({
         loginSuccess: false,
-        message: "해당하는 유저가 없습니다."
+        message: "이메일을 확인해주세요."
       });
     };
     // 요청된 email이 DB에 있다면 password 확인

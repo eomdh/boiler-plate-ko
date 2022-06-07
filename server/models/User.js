@@ -56,7 +56,7 @@ userSchema.methods.comparePassword = function(plainPassword, cb) {
     cb(null, isMatch);
   })
 }
-  //jsonwebtoken을 이용해서 token 생성
+  // jsonwebtoken을 이용해서 token 생성
 userSchema.methods.generateToken = function(cb) {
   var user = this;
 
@@ -71,7 +71,7 @@ userSchema.methods.generateToken = function(cb) {
 userSchema.statics.findByToken = function(token, cb) {
   var user = this;
 
-  // token을 decode한다.
+  // token을 decode
   jwt.verify(token, 'secretToken', function(err, decoded) {
     // 유저 email을 이용해서 유저를 찾은 다음
     // client에서 가져온 token과 DB에 보관된 token이 일치하는지 확인
